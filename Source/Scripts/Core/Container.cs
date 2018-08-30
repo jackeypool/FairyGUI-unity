@@ -809,10 +809,10 @@ namespace FairyGUI
 			int cnt = _descendants.Count;
 
 			int i, j, k, m;
-			object curMat, testMat, lastMat;
+			object curMat, testMat;
 			DisplayObject current, test;
 			float[] bound;
-			for (i = 0; i < cnt; i++)
+			for (i = 1; i < cnt; i++)
 			{
 				current = _descendants[i];
 				bound = current._internal_bounds;
@@ -821,8 +821,6 @@ namespace FairyGUI
 					continue;
 
 				k = -1;
-				lastMat = null;
-				m = i;
 				for (j = i - 1; j >= 0; j--)
 				{
 					test = _descendants[j];
@@ -830,25 +828,20 @@ namespace FairyGUI
 						break;
 
 					testMat = test.material;
-					if (testMat != null)
-					{
-						if (lastMat != testMat)
-						{
-							lastMat = testMat;
-							m = j + 1;
-						}
-
-						if (curMat == testMat)
-							k = m;
+                    if (testMat != null)
+                    {
+                        if (curMat == testMat)
+                        {
+							k = j + 1;
+                            break;
+                        }
 					}
-
+//矩形是否相交
 					if ((bound[0] > test._internal_bounds[0] ? bound[0] : test._internal_bounds[0])
 						<= (bound[2] < test._internal_bounds[2] ? bound[2] : test._internal_bounds[2])
 						&& (bound[1] > test._internal_bounds[1] ? bound[1] : test._internal_bounds[1])
 						<= (bound[3] < test._internal_bounds[3] ? bound[3] : test._internal_bounds[3]))
 					{
-						if (k == -1)
-							k = m;
 						break;
 					}
 				}
